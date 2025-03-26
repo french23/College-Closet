@@ -1,7 +1,9 @@
 // Connect to backend
+
 docker exec -it project-root-db-1 psql -U admin -d postgres
 
 // Start backend
+
 uvicorn src.main:app --reload
 
 CREATE TABLE users (
