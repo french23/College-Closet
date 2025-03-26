@@ -8,18 +8,19 @@ uvicorn src.main:app --reload
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    age INTEGER
+    name VARCHAR(50),
+    email VARCHAR(50),
+    password VARCHAR(50)
 );
 
-INSERT INTO users (name, email, age) VALUES
-    ('John Smith', 'john.smith@example.com', 22),
-    ('Emma Johnson', 'emma.j@example.com', 20),
-    ('Michael Brown', 'michael.b@university.edu', 21),
-    ('Sarah Davis', 'sarah.d@college.edu', 19),
-    ('David Wilson', 'david.w@example.com', 23);
-    
+INSERT INTO users (name, email, password)
+VALUES
+  ('Alice Johnson', 'alice@example.com', 'password123'),
+  ('Bob Smith', 'bob@example.com', 'hunter2'),
+  ('Carol Lee', 'carol@example.com', 'qwerty123'),
+  ('David Kim', 'david@example.com', 'letmein'),
+  ('Eve Adams', 'eve@example.com', '12345678');
+
 
 
 for install
