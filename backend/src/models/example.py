@@ -1,11 +1,12 @@
-# models/example_model.py
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
 
-from pydantic import BaseModel
-from typing import Optional
+Base = declarative_base()
 
-class ExampleItem(BaseModel):
-    id: int
-    name: str
-    description: Optional[str] = None
-    is_active: bool = True
+class User(Base):
+    __tablename__ = "users"
 
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    email = Column(String(100), nullable=False, unique=True)
+    age = Column(Integer, nullable=True)

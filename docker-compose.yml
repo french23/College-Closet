@@ -1,33 +1,48 @@
-version: '3.9'
+version: '3.8'  # Optional but recommended for clarity
 
 services:
   frontend:
     build:
       context: ./frontend
+      target: development
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - /app/node_modules
     ports:
-      - "3000:80"
-    depends_on:
-      - backend
-    env_file:
-      - .env
+      - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    stdin_open: true
+    tty: true
 
   backend:
-    build:
-      context: ./backend
+    build: ./backend
     ports:
       - "8000:8000"
+    volumes:
+      - ./backend:/code
     env_file:
       - ./config/backend.env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   db:
     image: postgres:15
     restart: always
     volumes:
-      - ./data/postgres-data:/var/lib/postgresql/data
+      - ./data/postgres-data:/var/lib/postgresql/data:rw  # Add :rw for explicit permissions
+    environment:  # Add these explicitly rather than just in env_file
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: mydatabase
     env_file:
       - ./config/db.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d mydatabase"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     ports:
       - "5432:5432"
-
