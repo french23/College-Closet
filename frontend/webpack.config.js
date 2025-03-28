@@ -15,7 +15,10 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react']
+            presets: [
+              '@babel/preset-env',
+              ['@babel/preset-react', { runtime: 'automatic' }]
+            ]
           }
         }
       },
@@ -33,6 +36,14 @@ module.exports = {
   devServer: {
     port: 3000,
     hot: true,
-    open: true
+    open: true,
+    proxy: [
+      {
+        context: ['/api'],
+        target: 'http://127.0.0.1:8000',
+        changeOrigin: true,
+        secure: false
+      }
+    ]
   }
-};
+}  
