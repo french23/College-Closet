@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
 from pydantic import BaseModel, EmailStr
+from src.database import Base
 
-Base = declarative_base()
+
 
 # SQLAlchemy Model
 class User(Base):

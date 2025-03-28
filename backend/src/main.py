@@ -1,28 +1,29 @@
 from fastapi import FastAPI
-from src.models.user import User
-from src.database import engine
 from fastapi.middleware.cors import CORSMiddleware
-from src.routers import users_router, auth_router
+from src.database import engine, Base
+from src.models.user import User
+from src.models.item import Item  # import all models here
+from src.routers import users_router, auth_router, items
 
-# Create tables
-User.metadata.create_all(bind=engine)
+# Create *all* tables at once
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# Add CORS middleware
+# CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Your React frontend URL
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Include routers
+# Routers
 app.include_router(users_router)
 app.include_router(auth_router, prefix="/api/auth")
+app.include_router(items.items_router)
 
-# Test endpoint
 @app.get("/")
 def health_check():
     return {"status": "API is healthy"}
