@@ -5,5 +5,7 @@ psycopg2-binary>=2.9.0
 asyncpg
 python-dotenv
 passlib
-python-jose[cryptography]  # For JWT (optional)
-python-multipart          # For form data
+python-jose[cryptography] 
+python-multipart          
+email-validator
+pydantic

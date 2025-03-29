@@ -1,21 +1,19 @@
-# ✅ version is now optional in newer Compose versions, safe to remove
-# version: '3.8'
+version: '3.8'
 
 services:
   frontend:
     build:
       context: ./frontend
       target: development
-    volumes:
-      - ./frontend/src:/app/src
-      - ./frontend/public:/app/public
-      - /app/node_modules
     ports:
       - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     environment:
-      - CHOKIDAR_USEPOLLING=true
-    stdin_open: true
-    tty: true
+      - VITE_API_BASE_URL=http://backend:8000
+    depends_on:
+      - backend
 
   backend:
     build: ./backend
@@ -48,6 +46,5 @@ services:
       timeout: 5s
       retries: 5
 
-# ✅ Add this at the end to declare your named volume
 volumes:
   postgres-data:
